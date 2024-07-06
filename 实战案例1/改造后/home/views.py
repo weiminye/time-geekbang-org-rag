@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from .rag import 对话模式, 构造解析用户输入并返回结构化数据用的messages
+
 from .search import 查询
 
 from .models import 对话记录, 销售入账记录
@@ -12,11 +14,17 @@ def newtalk(request):
 
 def index(request):
     if request.method == 'POST':
-        question = request.POST['question']
+        用户输入 = request.POST['question']
         record = 对话记录()
         record.role = "user"
-        record.content = question
-        record.展示content = question
+        record.content = 用户输入
+        record.展示content = 用户输入
+        record.save()
+        结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(用户输入))
+        record = 对话记录()
+        record.role = "assistant"
+        record.content = 结构化数据
+        record.展示content = 结构化数据
         record.save()
 
     conversation_list = 对话记录.objects.all().order_by('created_time')
