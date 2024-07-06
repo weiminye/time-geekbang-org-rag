@@ -1,5 +1,51 @@
 {% extends "base.html" %} 
 
 {% block main_content%}
-销售对账
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3 class="h3">销售管理 / 销售对账</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+          <a class="btn btn-sm btn-primary">添加记录</a>
+        </div>
+      </div>
+  </div>
+
+  <div>
+    <form class="form-inline">
+        <div class="form-group mb-2">
+            <label for="validationTooltip01">客户</label>&nbsp;&nbsp;
+            <input type="text" class="form-control">&nbsp;&nbsp;
+            <label for="validationTooltip02">入账日期</label>&nbsp;&nbsp;
+            <input type="text" class="form-control">&nbsp;&nbsp;
+        <button class="btn btn-primary" type="submit">搜索</button>
+        </div>
+      </form>
+  </div>
+  <br/>
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>操作</th>
+          <th>客户</th>
+          <th>入账日期</th>
+          <th>入账金额</th>
+          <th>已到账款项</th>
+          <th>剩余到账款项</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1,001</td>
+          <td><a class="btn btn-sm btn-primary">修改</a> &nbsp; <a class="btn btn-sm btn-primary">删除</a></td>
+          <td>data</td>
+          <td>placeholder</td>
+          <td>text</td>
+          <td>text</td>
+          <td>text</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
