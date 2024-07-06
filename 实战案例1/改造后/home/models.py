@@ -10,3 +10,15 @@ class 销售入账记录(models.Model):
     入账金额 = models.TextField(null=True)
     已到账款项 = models.IntegerField(null=True)
     剩余到账款项 = models.IntegerField(null=True)
+
+class 对话记录(models.Model):
+    id = models.IntegerField(
+         primary_key = True,
+         editable = False)
+
+    role = models.TextField()
+    展示content = models.TextField()
+    content = models.TextField()
+
+    created_time = models.DateTimeField(auto_now_add=True)
+    lastmodified_time = models.DateTimeField(auto_now=True)

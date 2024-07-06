@@ -4,11 +4,19 @@ from django.urls import reverse
 
 from .search import 查询
 
-from .models import 销售入账记录
+from .models import 对话记录, 销售入账记录
 
 def index(request):
-    # return HttpResponse("home index")
-    return render(request, "home/index.html")
+    if request.method == 'POST':
+        question = request.POST['question']
+        record = 对话记录()
+        record.role = "user"
+        record.content = question
+        record.展示content = question
+        record.save()
+
+    conversation_list = 对话记录.objects.all().order_by('created_time')
+    return render(request, "home/index.html",{"object_list":conversation_list})
 
 def salescheck(request):
     # return HttpResponse("home index")
