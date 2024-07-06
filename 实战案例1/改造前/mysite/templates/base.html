@@ -136,7 +136,7 @@
     {% block head_bottom_before_body%}{% endblock %}
   </head>
   <body><nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">传统MIS系统</a>
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/">传统MIS系统</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -153,16 +153,38 @@
         <div class="sidebar-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="#">
+              <a class="nav-link active" href="/">
                 <span data-feather="home"></span>
                 首页 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span data-feather="file"></span>
                 销售管理
               </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">
+                  <span data-feather="list"></span>
+                  报价单
+                </a>
+                <a class="dropdown-item" href="#">
+                  <span data-feather="list"></span>
+                  销售订单
+                </a>
+                <a class="dropdown-item" href="#">
+                  <span data-feather="list"></span>
+                  送货单
+                </a>
+                <a class="dropdown-item" href="#">
+                  <span data-feather="list"></span>
+                  退货单
+                </a>
+                <a class="dropdown-item" href="/salescheck">
+                  <span data-feather="list"></span>
+                  销售对账
+                </a>
+              </div>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">
