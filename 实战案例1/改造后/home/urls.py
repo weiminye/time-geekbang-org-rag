@@ -7,4 +7,5 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("salescheck", views.salescheck, name="salescheck"),
     path("addsalescheck", views.addsalescheck, name="addsalescheck"),
+    path("newtalk", views.newtalk, name="newtalk"),
 ]

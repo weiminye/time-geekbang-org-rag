@@ -6,6 +6,10 @@ from .search import 查询
 
 from .models import 对话记录, 销售入账记录
 
+def newtalk(request):
+    对话记录.objects.all().delete()
+    return redirect(reverse('home:index'))
+
 def index(request):
     if request.method == 'POST':
         question = request.POST['question']
