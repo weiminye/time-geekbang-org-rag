@@ -1,2 +1,1 @@
-# time-geekbang-org-rag
-the source code of RAG course at https://time.geekbang.org/
+# 《RAG开发大模型应用掉过的坑》系列文章配套代码
