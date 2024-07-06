@@ -36,15 +36,24 @@
         </tr>
       </thead>
       <tbody>
+        {% for current_obj in object_list  %}
         <tr>
-          <td>1,001</td>
+          <td>{{current_obj.id}}</td>
           <td><a class="btn btn-sm btn-primary">修改</a> &nbsp; <a class="btn btn-sm btn-primary">删除</a></td>
-          <td>data</td>
-          <td>placeholder</td>
-          <td>text</td>
-          <td>text</td>
-          <td>text</td>
+          <td>{{current_obj.客户}}</td>
+          <td>{{current_obj.入账日期}}</td>
+          <td>{{current_obj.入账金额}}</td>
+          <td>{{current_obj.已到账款项}}</td>
+          <td>{{current_obj.剩余到账款项}}</td>
+        </tr>                
+        {% empty %}
+        <tr>
+          <td colspan="7">
+            <div class="text-center">暂无数据
+            </div>
+          </td>
         </tr>
+      {% endfor %}
       </tbody>
     </table>
   </div>
