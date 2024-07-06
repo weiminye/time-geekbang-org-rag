@@ -1,8 +1,9 @@
+import json
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .rag import 对话模式, 构造解析用户输入并返回结构化数据用的messages
+from .rag import 对话模式, 构造查询结果用的messages, 构造解析用户输入并返回结构化数据用的messages
 
 from .search import 查询
 
@@ -20,12 +21,30 @@ def index(request):
         record.content = 用户输入
         record.展示content = 用户输入
         record.save()
-        结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(用户输入))
-        record = 对话记录()
-        record.role = "assistant"
-        record.content = 结构化数据
-        record.展示content = 结构化数据
-        record.save()
+        重试总次数 = 1
+        当前重试次数 = 0
+        查询结果 = None
+        while 当前重试次数 <= 重试总次数:
+            try:
+                结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(用户输入))
+                record = 对话记录()
+                record.role = "assistant"
+                record.content = 结构化数据
+                record.展示content = 结构化数据
+                record.save()
+
+                查询参数 = json.loads(结构化数据)
+                查询结果 = 查询(查询参数)
+                break
+            except:
+                当前重试次数 += 1
+        if 查询结果 is not None:
+            AI根据查询结果的回答 = 对话模式(构造查询结果用的messages(查询结果,用户输入))
+            record = 对话记录()
+            record.role = "assistant"
+            record.content = AI根据查询结果的回答
+            record.展示content = AI根据查询结果的回答
+            record.save()
 
     conversation_list = 对话记录.objects.all().order_by('created_time')
     return render(request, "home/index.html",{"object_list":conversation_list})

@@ -2,6 +2,7 @@ import json
 import os
 
 import requests
+from django.core import serializers
 
 def get_access_token():
   ernie_client_id = os.getenv("baiduclientid")
@@ -30,7 +31,10 @@ def 对话模式(messages):
   
   response = requests.request("POST", url, headers=headers, data=payload)
   json_result = json.loads(response.text)
-  处理后结果 = 对AI结果进一步处理(json_result["result"])
+  if "error_code" in json_result:
+    return json_result["error_msg"] + "：" + payload
+  else:
+    处理后结果 = 对AI结果进一步处理(json_result["result"])
   return 处理后结果
 
 def 构造解析用户输入并返回结构化数据用的messages(用户输入):
@@ -51,3 +55,20 @@ def 构造解析用户输入并返回结构化数据用的messages(用户输入)
 
 def 对AI结果进一步处理(AI结果):
   return AI结果.replace("```json", '').replace("```", '')
+
+def 将查询结果转为字符串(查询结果):
+  json_str = serializers.serialize("json", list(查询结果))
+  return_str = ""
+  data = json.loads(json_str)
+  for current in data:
+    for key, value in current['fields'].items():
+      return_str += f"{key}：{value}\n"
+  return return_str
+def 构造查询结果用的messages(查询结果,用户输入):
+  return [{"role": "user", "content": f"""
+  已经从数据库中查询出如下结果：
+
+  {将查询结果转为字符串(查询结果)}
+
+  请根据以上查询结果回答用户的问题：{用户输入}
+  """}]
