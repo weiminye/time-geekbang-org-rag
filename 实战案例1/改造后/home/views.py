@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .rag import 对话模式, 构造全部messages, 构造查询结果用的messages, 构造解析用户输入并返回结构化数据用的messages
+from .rag import *
 
 from .search import 查询
 
@@ -20,28 +20,15 @@ def index(request):
     if request.method == 'POST':
         用户输入 = request.POST['question']
 
-        之前的用户输入 = ""
-        之前的messages = 对话记录.objects.filter(已结束=False).order_by('created_time')
-        for current in 之前的messages:
-            if current.role == 'user' and current.content is not None:
-                之前的用户输入 += current.content
-
-        重试总次数 = 1
-        当前重试次数 = 0
+        查询参数 = 获取结构化数据查询参数(用户输入)
         查询结果 = None
-        while 当前重试次数 <= 重试总次数:
-            try:
-                结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(之前的用户输入,用户输入),用户输入,原文不带入大模型对话中=False,结果不带入大模型对话中=True)
-                查询参数 = json.loads(结构化数据)
-                查询结果 = 查询(查询参数)
-                break
-            except:
-                当前重试次数 += 1
-        if 查询结果 is not None:
-            当前messages = 构造查询结果用的messages(查询结果,用户输入)
-            之前的messages = 对话记录.objects.filter(已结束=False,不带入大模型对话中 = False).order_by('created_time')
-            全部messages = 构造全部messages(之前的messages,当前messages)
-            AI根据查询结果的回答 = 对话模式(全部messages,None,原文不带入大模型对话中=True,结果不带入大模型对话中=False)
+        if 查询参数 is not None:
+            查询结果 = 查询(查询参数)
+
+        if 查询结果 is None:
+            从数据库查不到相关数据时的操作()
+        else:
+            根据查询结果回答用户输入(查询结果,用户输入)
 
     conversation_list = 对话记录.objects.filter(已结束=False).order_by('created_time')
     return render(request, "home/index.html",{"object_list":conversation_list})
