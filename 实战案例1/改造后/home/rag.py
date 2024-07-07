@@ -4,6 +4,8 @@ import os
 import requests
 from django.core import serializers
 
+from .models import 对话记录
+
 def get_access_token():
   ernie_client_id = os.getenv("baiduclientid")
   ernie_client_secret = os.getenv("baiduclientsecret")
@@ -35,7 +37,16 @@ def 对话模式(messages):
     return json_result["error_msg"] + "：" + payload
   else:
     处理后结果 = 对AI结果进一步处理(json_result["result"])
+  保存对话记录(messages[-1]["role"],messages[-1]["content"],messages[-1]["content"])
+  保存对话记录("assistant",json_result["result"],处理后结果)
   return 处理后结果
+
+def 保存对话记录(role,content,处理后content):
+  record = 对话记录()
+  record.role = role
+  record.content = content
+  record.处理后content = 处理后content
+  record.save()
 
 def 构造解析用户输入并返回结构化数据用的messages(用户输入):
   messages=[

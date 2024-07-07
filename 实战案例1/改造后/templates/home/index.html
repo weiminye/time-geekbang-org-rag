@@ -9,9 +9,9 @@
     {% for current_obj in object_list %}
     <div>
       {% if current_obj.role == "user" %}
-        你：{{current_obj.展示content}}
+        你：{{current_obj.处理后content}}
       {% else %}
-        AI：{{current_obj.展示content}}
+        AI：{{current_obj.处理后content}}
       {% endif %}
     </div>
     {% endfor %}

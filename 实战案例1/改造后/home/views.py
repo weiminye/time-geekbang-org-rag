@@ -19,24 +19,12 @@ def newtalk(request):
 def index(request):
     if request.method == 'POST':
         用户输入 = request.POST['question']
-        record = 对话记录()
-        record.role = "user"
-        record.content = 用户输入
-        record.展示content = 用户输入
-        record.save()
         重试总次数 = 1
         当前重试次数 = 0
         查询结果 = None
         while 当前重试次数 <= 重试总次数:
             try:
                 结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(用户输入))
-                record = 对话记录()
-                record.role = "assistant"
-                record.content = 结构化数据
-                record.展示content = 结构化数据
-                record.不带入大模型对话中 = True
-                record.save()
-
                 查询参数 = json.loads(结构化数据)
                 查询结果 = 查询(查询参数)
                 break
@@ -47,11 +35,6 @@ def index(request):
             之前的messages = 对话记录.objects.filter(已结束=False,不带入大模型对话中 = True).order_by('created_time')
             全部messages = 构造全部messages(之前的messages,当前messages)
             AI根据查询结果的回答 = 对话模式(全部messages)
-            record = 对话记录()
-            record.role = "assistant"
-            record.content = AI根据查询结果的回答
-            record.展示content = AI根据查询结果的回答
-            record.save()
 
     conversation_list = 对话记录.objects.filter(已结束=False).order_by('created_time')
     return render(request, "home/index.html",{"object_list":conversation_list})
