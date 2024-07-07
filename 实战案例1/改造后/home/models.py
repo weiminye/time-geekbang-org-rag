@@ -19,6 +19,8 @@ class 对话记录(models.Model):
     role = models.TextField()
     展示content = models.TextField()
     content = models.TextField()
+    不带入大模型对话中 = models.BooleanField(default=False)
+    已结束 = models.BooleanField(default=False)
 
     created_time = models.DateTimeField(auto_now_add=True)
     lastmodified_time = models.DateTimeField(auto_now=True)

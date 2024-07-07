@@ -10,7 +10,10 @@ from .search import 查询
 from .models import 对话记录, 销售入账记录
 
 def newtalk(request):
-    对话记录.objects.all().delete()
+    未结束的对话 = 对话记录.objects.filter(已结束=False)
+    for current in 未结束的对话:
+        current.已结束 = True
+    对话记录.objects.bulk_update(未结束的对话, ['已结束'])
     return redirect(reverse('home:index'))
 
 def index(request):
@@ -31,6 +34,7 @@ def index(request):
                 record.role = "assistant"
                 record.content = 结构化数据
                 record.展示content = 结构化数据
+                record.不带入大模型对话中 = True
                 record.save()
 
                 查询参数 = json.loads(结构化数据)
@@ -40,7 +44,7 @@ def index(request):
                 当前重试次数 += 1
         if 查询结果 is not None:
             当前messages = 构造查询结果用的messages(查询结果,用户输入)
-            之前的messages = 对话记录.objects.all().order_by('created_time')
+            之前的messages = 对话记录.objects.filter(已结束=False,不带入大模型对话中 = True).order_by('created_time')
             全部messages = 构造全部messages(之前的messages,当前messages)
             AI根据查询结果的回答 = 对话模式(全部messages)
             record = 对话记录()
@@ -49,7 +53,7 @@ def index(request):
             record.展示content = AI根据查询结果的回答
             record.save()
 
-    conversation_list = 对话记录.objects.all().order_by('created_time')
+    conversation_list = 对话记录.objects.filter(已结束=False).order_by('created_time')
     return render(request, "home/index.html",{"object_list":conversation_list})
 
 def salescheck(request):
