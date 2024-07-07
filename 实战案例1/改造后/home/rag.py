@@ -19,44 +19,67 @@ def get_access_token():
   response = requests.request("POST", url, headers=headers, data=payload)
   return response.json().get("access_token")
 
-def 对话模式(messages):
+def 对话模式(messages,用户输入):
   url = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie-lite-8k?access_token=" + get_access_token()
   
   json_obj = {
       "messages": messages,
   }
 
-  payload = json.dumps(json_obj)
+  playload = json.dumps(json_obj)
   headers = {
       'Content-Type': 'application/json'
   }
   
-  response = requests.request("POST", url, headers=headers, data=payload)
+  response = requests.request("POST", url, headers=headers, data=playload)
   json_result = json.loads(response.text)
   if "error_code" in json_result:
-    return json_result["error_msg"] + "：" + payload
+    return json_result["error_msg"] + "：" + playload
   else:
     处理后结果 = 对AI结果进一步处理(json_result["result"])
-  保存对话记录(messages[-1]["role"],messages[-1]["content"],messages[-1]["content"])
-  保存对话记录("assistant",json_result["result"],处理后结果)
+  保存对话记录(messages[-1]["role"],用户输入,messages[-1]["content"],playload)
+  保存对话记录("assistant",json_result["result"],处理后结果,None)
   return 处理后结果
 
-def 保存对话记录(role,content,处理后content):
+def 保存对话记录(role,content,处理后content,提交给大模型的playload):
   record = 对话记录()
   record.role = role
+  if content is not None:
+    record.content = content
   record.content = content
-  record.处理后content = 处理后content
+  if 处理后content is not None:
+    record.处理后content = 处理后content
+  if 提交给大模型的playload is not None:
+    record.提交给大模型的playload = 提交给大模型的playload  
   record.save()
 
-def 构造解析用户输入并返回结构化数据用的messages(用户输入):
+def 构造解析用户输入并返回结构化数据用的messages(之前的用户输入,用户输入):
+  if 之前的用户输入 is not None and len(之前的用户输入.strip()) > 0:
+    用户输入 = 之前的用户输入 + 用户输入
   messages=[
   {"role": "user", "content": f"""
-  请根据用户的输入返回json格式结果：
+  请根据用户的输入返回json格式结果，除此之外不要返回其他内容。注意，模块部分请按以下选项返回对应序号：
+   1. 销售对账
+   2. 报价单
+   3. 销售订单
+   4. 送货单
+   5. 退货单
+   6. 其他
 
-  示例：
+  示例1：
   用户：客户北京极客邦有限公司的款项到账了多少？
   系统：
-  {{'模块':'销售对账','客户名称':'北京极客邦有限公司'}}
+  {{'模块':1,'客户名称':'北京极客邦有限公司'}}
+
+  示例2：
+  用户：你好
+  系统：
+   {{'模块':6,'其他数据',None}}
+
+  示例3：
+  用户：最近一年你过得如何？
+  系统：
+   {{'模块':6,'其他数据',None}}
 
   用户：{用户输入}
   系统：

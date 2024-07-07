@@ -17,8 +17,9 @@ class 对话记录(models.Model):
          editable = False)
 
     role = models.TextField()
-    处理后content = models.TextField()
-    content = models.TextField()
+    content = models.TextField(null=True)
+    处理后content = models.TextField(null=True)
+    提交给大模型的playload = models.TextField(null=True)
     不带入大模型对话中 = models.BooleanField(default=False)
     已结束 = models.BooleanField(default=False)
 
