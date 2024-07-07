@@ -39,7 +39,7 @@ def index(request):
                 当前重试次数 += 1
         if 查询结果 is not None:
             当前messages = 构造查询结果用的messages(查询结果,用户输入)
-            之前的messages = 对话记录.objects.filter(已结束=False,不带入大模型对话中 = True).order_by('created_time')
+            之前的messages = 对话记录.objects.filter(已结束=False,不带入大模型对话中 = False).order_by('created_time')
             全部messages = 构造全部messages(之前的messages,当前messages)
             AI根据查询结果的回答 = 对话模式(全部messages,None,原文不带入大模型对话中=True,结果不带入大模型对话中=False)
 

@@ -112,11 +112,10 @@ def 构造查询结果用的messages(查询结果,用户输入):
   """}]
 
 def 构造全部messages(之前的messages,当前messages):
-  if 之前的messages is not None and len(之前的messages) > 0:
+  if 之前的messages is not None and len(之前的messages) >= 2:
     适配大模型的messages = []
-    for current in 之前的messages:
-      if current.不带入大模型对话中 is False:
-        适配大模型的messages.append({"role":current.role, "content":current.content})
+    for current in list(之前的messages)[:-1]: # 使用-1是为了去掉当前messages
+      适配大模型的messages.append({"role":current.role, "content":current.content})
     return [*适配大模型的messages,*当前messages]
   else:
     return 当前messages
