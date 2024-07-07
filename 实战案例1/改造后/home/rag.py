@@ -12,12 +12,12 @@ def get_access_token():
   ernie_client_secret = os.getenv("baiduclientsecret")
   url = f"https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id={ernie_client_id}&client_secret={ernie_client_secret}"
   
-  payload = json.dumps("")
+  playload = json.dumps("")
   headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
+  response = requests.request("POST", url, headers=headers, data=playload)
   return response.json().get("access_token")
 
 def 对话模式(messages,用户输入,原文不带入大模型对话中,结果不带入大模型对话中):
