@@ -19,7 +19,7 @@ def get_access_token():
   response = requests.request("POST", url, headers=headers, data=payload)
   return response.json().get("access_token")
 
-def 对话模式(messages,用户输入):
+def 对话模式(messages,用户输入,原文不带入大模型对话中,结果不带入大模型对话中):
   url = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie-lite-8k?access_token=" + get_access_token()
   
   json_obj = {
@@ -37,11 +37,11 @@ def 对话模式(messages,用户输入):
     return json_result["error_msg"] + "：" + playload
   else:
     处理后结果 = 对AI结果进一步处理(json_result["result"])
-  保存对话记录(messages[-1]["role"],用户输入,messages[-1]["content"],playload)
-  保存对话记录("assistant",json_result["result"],处理后结果,None)
+  保存对话记录(messages[-1]["role"],用户输入,messages[-1]["content"],playload,原文不带入大模型对话中)
+  保存对话记录("assistant",json_result["result"],处理后结果,None,结果不带入大模型对话中)
   return 处理后结果
 
-def 保存对话记录(role,content,处理后content,提交给大模型的playload):
+def 保存对话记录(role,content,处理后content,提交给大模型的playload,不带入大模型对话中):
   record = 对话记录()
   record.role = role
   if content is not None:
@@ -50,7 +50,8 @@ def 保存对话记录(role,content,处理后content,提交给大模型的playlo
   if 处理后content is not None:
     record.处理后content = 处理后content
   if 提交给大模型的playload is not None:
-    record.提交给大模型的playload = 提交给大模型的playload  
+    record.提交给大模型的playload = 提交给大模型的playload
+  record.不带入大模型对话中 = 不带入大模型对话中
   record.save()
 
 def 构造解析用户输入并返回结构化数据用的messages(之前的用户输入,用户输入):
