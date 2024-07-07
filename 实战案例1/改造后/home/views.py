@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .rag import 对话模式, 构造查询结果用的messages, 构造解析用户输入并返回结构化数据用的messages
+from .rag import 对话模式, 构造全部messages, 构造查询结果用的messages, 构造解析用户输入并返回结构化数据用的messages
 
 from .search import 查询
 
@@ -39,7 +39,10 @@ def index(request):
             except:
                 当前重试次数 += 1
         if 查询结果 is not None:
-            AI根据查询结果的回答 = 对话模式(构造查询结果用的messages(查询结果,用户输入))
+            当前messages = 构造查询结果用的messages(查询结果,用户输入)
+            之前的messages = 对话记录.objects.all().order_by('created_time')
+            全部messages = 构造全部messages(之前的messages,当前messages)
+            AI根据查询结果的回答 = 对话模式(全部messages)
             record = 对话记录()
             record.role = "assistant"
             record.content = AI根据查询结果的回答

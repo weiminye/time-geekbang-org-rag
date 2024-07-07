@@ -72,3 +72,12 @@ def 构造查询结果用的messages(查询结果,用户输入):
 
   请根据以上查询结果回答用户的问题：{用户输入}
   """}]
+
+def 构造全部messages(之前的messages,当前messages):
+  if 之前的messages is not None and len(之前的messages) > 0:
+    适配大模型的messages = []
+    for current in 之前的messages:
+      适配大模型的messages.append({"role":current.role, "content":current.content})
+    return [*适配大模型的messages,*当前messages]
+  else:
+    return 当前messages
