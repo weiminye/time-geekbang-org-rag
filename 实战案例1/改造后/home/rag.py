@@ -53,7 +53,6 @@ def 保存对话记录(role,content,处理后content,提交给大模型的playlo
     record.处理后content = 处理后content
   if 提交给大模型的playload is not None:
     record.提交给大模型的playload = 提交给大模型的playload
-  record.不带入大模型对话中 = 不带入大模型对话中
   record.save()
 #endregion
 
