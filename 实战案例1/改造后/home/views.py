@@ -25,7 +25,8 @@ def index(request):
         if 查询结果 is None:
             从数据库查不到相关数据时的操作()
         else:
-            根据查询结果回答用户输入(查询结果,用户输入)
+            查询结果json格式 = serializers.serialize("json", list(查询结果))
+            根据查询结果回答用户输入(查询结果json格式,用户输入)
 
     conversation_list = 对话记录.objects.filter(已结束=False).order_by('created_time')
     return render(request, "home/index.html",{"object_list":conversation_list})

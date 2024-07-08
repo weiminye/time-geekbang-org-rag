@@ -120,12 +120,15 @@ def 对AI结果进一步处理(AI结果):
   return 处理后结果
 
 def 将查询结果转为字符串(查询结果):
-  json_str = serializers.serialize("json", list(查询结果))
   return_str = ""
-  data = json.loads(json_str)
+  data = json.loads(查询结果)
   for current in data:
-    for key, value in current['fields'].items():
-      return_str += f"{key}：{value}\n"
+    if 'fields' in current:
+      for key, value in current['fields'].items():
+        return_str += f"{key}：{value}\n"
+    else:
+      for key, value in current.items():
+        return_str += f"{key}：{value}\n"
   return return_str
 #endregion
 
