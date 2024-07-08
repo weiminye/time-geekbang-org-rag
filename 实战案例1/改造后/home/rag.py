@@ -49,7 +49,6 @@ def 保存对话记录(role,content,处理后content,提交给大模型的playlo
   record.role = role
   if content is not None:
     record.content = content
-  record.content = content
   if 处理后content is not None:
     record.处理后content = 处理后content
   if 提交给大模型的playload is not None:
