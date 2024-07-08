@@ -9,6 +9,8 @@ from .search import 查询
 
 from .models import 对话记录, 销售入账记录
 
+from django.core import serializers
+
 def newtalk(request):
     开始新的对话()
     return redirect(reverse('home:index'))
@@ -28,7 +30,7 @@ def index(request):
             查询结果json格式 = serializers.serialize("json", list(查询结果))
             根据查询结果回答用户输入(查询结果json格式,用户输入)
 
-    conversation_list = 对话记录.objects.filter(已结束=False).order_by('created_time')
+    conversation_list = 获取当前对话记录()
     return render(request, "home/index.html",{"object_list":conversation_list})
 
 def salescheck(request):

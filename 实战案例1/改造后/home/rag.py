@@ -2,7 +2,6 @@ import json
 import os
 
 import requests
-from django.core import serializers
 
 from .models import 对话记录
 
@@ -171,3 +170,6 @@ def 开始新的对话():
   for current in 未结束的对话:
       current.已结束 = True
   对话记录.objects.bulk_update(未结束的对话, ['已结束'])
+
+def 获取当前对话记录():
+  return 对话记录.objects.filter(已结束=False).order_by('created_time')
