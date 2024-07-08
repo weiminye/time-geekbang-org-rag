@@ -10,10 +10,7 @@ from .search import 查询
 from .models import 对话记录, 销售入账记录
 
 def newtalk(request):
-    未结束的对话 = 对话记录.objects.filter(已结束=False)
-    for current in 未结束的对话:
-        current.已结束 = True
-    对话记录.objects.bulk_update(未结束的对话, ['已结束'])
+    开始新的对话()
     return redirect(reverse('home:index'))
 
 def index(request):

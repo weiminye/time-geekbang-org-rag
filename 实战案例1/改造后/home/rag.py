@@ -162,3 +162,9 @@ def 根据查询结果回答用户输入(查询结果,用户输入):
   之前的messages = 对话记录.objects.filter(已结束=False,不带入大模型对话中 = False).order_by('created_time')
   全部messages = 构造全部messages(之前的messages,当前messages)
   对话模式(全部messages,None,原文不带入大模型对话中=True,结果不带入大模型对话中=False)
+
+def 开始新的对话():
+  未结束的对话 = 对话记录.objects.filter(已结束=False)
+  for current in 未结束的对话:
+      current.已结束 = True
+  对话记录.objects.bulk_update(未结束的对话, ['已结束'])
