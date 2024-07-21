@@ -2,6 +2,7 @@
 import json
 import subprocess
 import feedparser
+from datetime import datetime
 
 def 抓取数据():
     # 定义要抓取的RSS源
@@ -40,7 +41,16 @@ def 翻译成中文(current):
 
 def 生成每日简报():
     print("生成每日简报")
-    每日简报文件 = "每日简报.html"
+
+    # 获取当前日期和时间
+    now = datetime.now()
+
+    # 将其格式化为字符串，例如 "2023-04-05_14-30-00"
+    formatted_date = now.strftime("%Y-%m-%d_%H-%M-%S")
+
+    # 使用日期字符串作为文件名
+    每日简报文件 = f"{formatted_date}.每日简报.html"
+
     with open(每日简报文件, 'w', encoding='utf-8') as f:
         f.write("<html><head><title>每日简报</title></head><body>")
         f.write("<h1>每日简报</h1>")
@@ -58,10 +68,10 @@ def 生成每日简报():
         f.write("</ul>")
         f.write("</body></html>")
 
-def 打开每日简报():
-    print("打开每日简报")
+    return 每日简报文件
+def 打开每日简报(每日简报文件):
     # 使用默认的应用程序打开HTML文件
-    subprocess.run(['start', "每日简报.html"], shell=True, check=True)
+    subprocess.run(['start', 每日简报文件], shell=True, check=True)
 
 if __name__ == "__main__":
     文章列表 = 抓取数据()
@@ -73,5 +83,5 @@ if __name__ == "__main__":
     #     文本摘要(current)
     #     翻译成中文(current,摘要)
 
-    生成每日简报()
-    打开每日简报()
+    每日简报文件 = 生成每日简报()
+    打开每日简报(每日简报文件)
