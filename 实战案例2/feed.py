@@ -46,14 +46,14 @@ def 生成每日简报():
     now = datetime.now()
 
     # 将其格式化为字符串，例如 "2023-04-05_14-30-00"
-    formatted_date = now.strftime("%Y-%m-%d_%H-%M-%S")
+    formatted_date = now.strftime("%Y-%m-%d")
 
     # 使用日期字符串作为文件名
-    每日简报文件 = f"{formatted_date}.每日简报.html"
+    每日简报文件 = f"{formatted_date}.CNET每日简报.html"
 
     with open(每日简报文件, 'w', encoding='utf-8') as f:
-        f.write("<html><head><title>每日简报</title></head><body>")
-        f.write("<h1>每日简报</h1>")
+        f.write("<html><head><title>CNET每日简报</title></head><body>")
+        f.write(f"<h1>CNET每日简报-{formatted_date}</h1>")
         f.write("<ul>")
         文章列表 = [{"title": "标题1", "summary": "摘要1"}]
         for current in 文章列表:
