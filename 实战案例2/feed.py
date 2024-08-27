@@ -2,7 +2,9 @@
 import json
 import subprocess
 import feedparser
-from datetime import datetime
+
+import time
+from datetime import date, datetime
 
 from 元数据 import *
 
@@ -35,6 +37,11 @@ def 获取元数据(current):
     元数据实例.set_创建日期(current.published_parsed)
     元数据实例.set_url(current.link)
     return 元数据实例
+
+def 根据元数据过滤新闻(current元数据):
+    今天 = date.today()
+    今天struct_time格式 = time.struct_time(今天.timetuple())
+    return current元数据.创建日期 > 今天struct_time格式
 
 def 保存文章内容(current):
     pass
@@ -80,14 +87,16 @@ def 打开每日简报(每日简报文件):
     subprocess.run(['start', 每日简报文件], shell=True, check=True)
 
 if __name__ == "__main__":
-    # print('test')
     新闻列表 = 获取数据()
-    # print('len(新闻列表)=' + len(新闻列表))
+    print(f'共获取{len(新闻列表)}条新闻')
     元数据list = []
     for current in 新闻列表:
-        print('获取元数据')
         current元数据=获取元数据(current)
-        元数据list.append(current元数据)
+        if 根据元数据过滤新闻(current元数据):
+            print('属于今天的新闻，准备处理')
+            元数据list.append(current元数据)
+        else:
+            print('不是今天的新闻，跳过')
         # current新闻内容=抓取新闻内容(current)
         # 翻译成中文(current,文章内容)
         # 文本摘要(current)
