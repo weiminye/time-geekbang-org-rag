@@ -4,7 +4,9 @@ import subprocess
 import feedparser
 from datetime import datetime
 
-def 抓取数据():
+from 元数据 import *
+
+def 获取数据():
     # 定义要抓取的RSS源
     rss源 = "https://www.cnet.com/rss/news/"
     
@@ -13,10 +15,9 @@ def 抓取数据():
 
     #region 这段代码纯粹是为了确认我们抓取成功，调试用，可以删除
     for entry in feed.entries:
-        # print(entry.title)  # 打印标题
-        # print(entry.link)   # 打印链接
-        # print(entry.description)  # 打印描述
-        pass
+        print(entry.title)  # 打印标题
+        print(entry.link)   # 打印链接
+        print(entry.description)  # 打印描述
     #endregion
 
     #endregion
@@ -27,8 +28,13 @@ def 抓取数据():
     #endregion
     return feed.entries
 
-def 保存文章元数据(current):
-    pass
+def 获取元数据(current):
+    元数据实例 = 元数据()
+    元数据实例.set_标题(current.title)
+    元数据实例.set_作者(current.author)
+    元数据实例.set_创建日期(current.published_parsed)
+    元数据实例.set_url(current.link)
+    return 元数据实例
 
 def 保存文章内容(current):
     pass
@@ -74,14 +80,20 @@ def 打开每日简报(每日简报文件):
     subprocess.run(['start', 每日简报文件], shell=True, check=True)
 
 if __name__ == "__main__":
-    文章列表 = 抓取数据()
-    # 遍历文章
-    # for current in 文章列表:
-    #     保存文章元数据(current)
-    #     文章内容=保存文章内容(current)
-    #     翻译成中文(current,文章内容)
-    #     文本摘要(current)
-    #     翻译成中文(current,摘要)
-
-    每日简报文件 = 生成每日简报()
-    打开每日简报(每日简报文件)
+    # print('test')
+    新闻列表 = 获取数据()
+    # print('len(新闻列表)=' + len(新闻列表))
+    元数据list = []
+    for current in 新闻列表:
+        print('获取元数据')
+        current元数据=获取元数据(current)
+        元数据list.append(current元数据)
+        # current新闻内容=抓取新闻内容(current)
+        # 翻译成中文(current,文章内容)
+        # 文本摘要(current)
+        # 翻译成中文(current,摘要)
+        # 保存为json文件()
+    with open('result.json', 'w', encoding='utf-8') as f:
+        json.dump(元数据list, f, ensure_ascii=False, indent=4, cls=元数据Encoder)
+    # 每日简报文件 = 生成每日简报()
+    # 打开每日简报(每日简报文件)
