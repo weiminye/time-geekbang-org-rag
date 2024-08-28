@@ -1,5 +1,16 @@
 import json
 
+class 新闻:
+    def __init__(self):
+        self.元数据 = None
+        self.新闻内容 = None
+
+    def set_元数据(self, 元数据):
+        self.元数据 = 元数据
+
+    def set_新闻内容(self, 新闻内容):
+        self.新闻内容 = 新闻内容
+
 class 元数据:
     def __init__(self):
         self.标题 = None
