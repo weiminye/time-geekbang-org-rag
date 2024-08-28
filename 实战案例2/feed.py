@@ -10,6 +10,7 @@ import time
 from datetime import date, datetime
 
 from 新闻 import *
+from rag import *
 
 def 获取数据():
     # 定义要抓取的RSS源
@@ -57,13 +58,10 @@ def 抓取新闻内容(url):
     else:
         return None
 
-def 保存文章内容(current):
+def 文本摘要(输入字符串):
     pass
 
-def 文本摘要(current):
-    pass
-
-def 翻译成中文(current):
+def 翻译成中文(输入字符串):
     pass
 
 def 生成每日简报():
@@ -110,12 +108,14 @@ if __name__ == "__main__":
             今天的新闻 = 新闻()
             今天的新闻.set_元数据(current元数据)
             print('属于今天的新闻，准备处理')
-            今天的新闻.新闻内容=抓取新闻内容(今天的新闻.元数据.url)
-            # 今天的新闻.新闻内容_中文 = 翻译成中文(current,文章内容)
-            # 翻译成中文(current,文章内容)
-            # 文本摘要(current)
-            # 翻译成中文(current,摘要)
-            今天的新闻list.append(今天的新闻)
+            今天的新闻.set_新闻内容(抓取新闻内容(今天的新闻.元数据.url))
+            if 今天的新闻 is not None and 今天的新闻.新闻内容 is not None:
+                今天的新闻.set_摘要(文本摘要(今天的新闻.新闻内容))
+                # 今天的新闻.新闻内容_中文 = 翻译成中文(current,文章内容)
+                # 翻译成中文(current,文章内容)
+                # 文本摘要(current)
+                # 翻译成中文(current,摘要)
+                今天的新闻list.append(今天的新闻)
         else:
             print('不是今天的新闻，跳过')
     with open('result.json', 'w', encoding='utf-8') as f:

@@ -11,6 +11,9 @@ class 新闻:
     def set_新闻内容(self, 新闻内容):
         self.新闻内容 = 新闻内容
 
+    def set_摘要(self, 摘要):
+        self.摘要 = 摘要
+
 class 新闻Encoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, 新闻):
