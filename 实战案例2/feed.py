@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 import subprocess
+
+from bs4 import BeautifulSoup
+import requests
 import feedparser
 
 import time
@@ -44,7 +47,15 @@ def 根据元数据过滤新闻(current元数据):
     return current元数据.创建日期 > 今天struct_time格式
 
 def 抓取新闻内容(url):
-    return f'新闻内容 of {url}'
+    response = requests.get(url)
+    response.encoding = 'utf-8' # 指定编码
+    soup = BeautifulSoup(response.text, 'html.parser', from_encoding='utf-8') # 指定编码
+
+    正文 = soup.find('div', {'class': 'c-pageArticle_content'})
+    if 正文 is not None and 正文.text is not None:
+        return 正文.text
+    else:
+        return None
 
 def 保存文章内容(current):
     pass
