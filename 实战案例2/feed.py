@@ -6,7 +6,7 @@ import feedparser
 import time
 from datetime import date, datetime
 
-from 实战案例2.新闻 import *
+from 新闻 import *
 
 def 获取数据():
     # 定义要抓取的RSS源
@@ -43,8 +43,9 @@ def 根据元数据过滤新闻(current元数据):
     今天struct_time格式 = time.struct_time(今天.timetuple())
     return current元数据.创建日期 > 今天struct_time格式
 
-def 抓取新闻内容(current元数据):
-    return current元数据.url
+def 抓取新闻内容(url):
+    return f'新闻内容 of {url}'
+
 def 保存文章内容(current):
     pass
 
@@ -98,7 +99,7 @@ if __name__ == "__main__":
             今天的新闻 = 新闻()
             今天的新闻.set_元数据(current元数据)
             print('属于今天的新闻，准备处理')
-            今天的新闻.新闻内容=抓取新闻内容(今天的新闻.current元数据.url)
+            今天的新闻.新闻内容=抓取新闻内容(今天的新闻.元数据.url)
             # 今天的新闻.新闻内容_中文 = 翻译成中文(current,文章内容)
             # 翻译成中文(current,文章内容)
             # 文本摘要(current)
@@ -107,6 +108,6 @@ if __name__ == "__main__":
         else:
             print('不是今天的新闻，跳过')
     with open('result.json', 'w', encoding='utf-8') as f:
-        json.dump(元数据list, f, ensure_ascii=False, indent=4, cls=元数据Encoder)
+        json.dump(今天的新闻list, f, ensure_ascii=False, indent=4, cls=新闻Encoder)
     # 每日简报文件 = 生成每日简报()
     # 打开每日简报(每日简报文件)

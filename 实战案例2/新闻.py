@@ -11,6 +11,12 @@ class 新闻:
     def set_新闻内容(self, 新闻内容):
         self.新闻内容 = 新闻内容
 
+class 新闻Encoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, 新闻):
+            return {"元数据": json.loads(json.dumps(obj.元数据, cls=元数据Encoder)), "新闻内容": obj.新闻内容}
+        return super().default(obj)
+
 class 元数据:
     def __init__(self):
         self.标题 = None
