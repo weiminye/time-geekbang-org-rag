@@ -123,6 +123,8 @@ if __name__ == "__main__":
     新闻列表 = 获取数据()
     print(f'共获取{len(新闻列表)}条新闻')
     今天的新闻list = []
+    入库条数上限 = 2 # 出于教学目的设置的上限，你可以设置为0，表示不限制入库条数
+    当前入库条数 = 0
     for current in 新闻列表:
         current元数据 = 获取元数据(current)
         if 根据元数据过滤新闻(current元数据):
@@ -135,8 +137,12 @@ if __name__ == "__main__":
                 今天的新闻.set_标题_中文翻译(翻译成中文(今天的新闻.元数据.标题))
                 今天的新闻.set_新闻内容_中文翻译(对长文本进行翻译(今天的新闻.新闻内容))
                 今天的新闻list.append(今天的新闻)
+                当前入库条数 += 1
         else:
             print('不是今天的新闻，跳过')
+
+        if 入库条数上限 > 0 and 当前入库条数 > 入库条数上限:
+           break
     with open('result.json', 'w', encoding='utf-8') as f:
         json.dump(今天的新闻list, f, ensure_ascii=False, indent=4, cls=新闻Encoder)
     每日简报文件 = 生成每日简报(今天的新闻list)

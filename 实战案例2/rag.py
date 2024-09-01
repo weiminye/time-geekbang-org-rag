@@ -4,7 +4,7 @@ import os
 import requests
 
 #region 跟具体大模型相关的，如果需要修改大模型，可能需要修改这部分函数
-文本划分长度 = 3000
+文本划分长度 = 1500
 
 def get_access_token():
   ernie_client_id = os.getenv("baiduclientid")
