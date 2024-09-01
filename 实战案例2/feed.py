@@ -7,7 +7,7 @@ import requests
 import feedparser
 
 import time
-from datetime import date, datetime
+from datetime import date
 
 from 新闻 import *
 from rag import *
@@ -59,16 +59,22 @@ def 抓取新闻内容(url):
     else:
         return None
 
+def 按长度划分文本(输入文本, 文本划分长度):
+    return [输入文本[i:i+文本划分长度] for i in range(0, len(输入文本), 文本划分长度)]
+
 def 文本摘要(输入文本):
     return 对话模式(构造文本摘要messages(输入文本))
 
 def 对长文本进行摘要(输入文本):
   if len(输入文本) > 文本划分长度:
-    文本list = 输入文本.split('\n')
+    文本list = 按长度划分文本(输入文本, 文本划分长度)
     文本摘要结果 = ''
     for 当前文本 in 文本list:
+    #   print('当前文本='+当前文本)
       当前文本摘要结果=文本摘要(当前文本)
+    #   print('当前文本摘要结果='+当前文本摘要结果)
       文本摘要结果 += 当前文本摘要结果 + '\n'
+    #   print('文本摘要结果='+文本摘要结果)
     return 文本摘要结果
   else:
     return 文本摘要(输入文本)
@@ -78,7 +84,7 @@ def 翻译成中文(输入文本):
 
 def 对长文本进行翻译(输入文本):
   if len(输入文本) > 文本划分长度:
-    文本list = 输入文本.split('\n')
+    文本list = 按长度划分文本(输入文本, 文本划分长度)
     文本翻译结果 = ''
     for 当前文本 in 文本list:
       当前文本翻译结果=翻译成中文(当前文本)
@@ -91,7 +97,7 @@ if __name__ == "__main__":
     新闻列表 = 获取数据()
     print(f'共获取{len(新闻列表)}条新闻')
     今天的新闻list = []
-    入库条数上限 = 2 # 出于教学目的设置的上限，你可以设置为0，表示不限制入库条数
+    入库条数上限 = 3 # 出于教学和调试目的设置的上限，你可以设置为0，表示不限制入库条数
     当前入库条数 = 0
     for current in 新闻列表:
         current元数据 = 获取元数据(current)
