@@ -11,6 +11,7 @@ from datetime import date, datetime
 
 from 新闻 import *
 from rag import *
+from 生成简报 import *
 
 def 获取数据():
     # 定义要抓取的RSS源
@@ -86,39 +87,6 @@ def 对长文本进行翻译(输入文本):
   else:
     return 翻译成中文(输入文本)
 
-def 生成每日简报(今天的新闻list:list):
-    print("生成每日简报")
-
-    # 获取当前日期和时间
-    now = datetime.now()
-
-    # 将其格式化为字符串，例如 "2023-04-05_14-30-00"
-    formatted_date = now.strftime("%Y-%m-%d")
-
-    # 使用日期字符串作为文件名
-    每日简报文件 = f"{formatted_date}.CNET每日简报.html"
-
-    with open(每日简报文件, 'w', encoding='utf-8') as f:
-        f.write("<html><head><title>CNET每日简报</title></head><body>")
-        f.write(f"<h1>CNET每日简报-{formatted_date}</h1>")
-        f.write("<ul>")
-        for current in 今天的新闻list:
-            f.write("<li>")
-            f.write("<h2>")
-            f.write(current.元数据.标题_中文翻译)
-            f.write("</h2>")
-            f.write("<p>")
-            f.write(current.摘要)
-            f.write("</p>")
-            f.write("</li>")
-        f.write("</ul>")
-        f.write("</body></html>")
-
-    return 每日简报文件
-def 打开每日简报(每日简报文件):
-    # 使用默认的应用程序打开HTML文件
-    subprocess.run(['start', 每日简报文件], shell=True, check=True)
-
 if __name__ == "__main__":
     新闻列表 = 获取数据()
     print(f'共获取{len(新闻列表)}条新闻')
@@ -128,6 +96,9 @@ if __name__ == "__main__":
     for current in 新闻列表:
         current元数据 = 获取元数据(current)
         if 根据元数据过滤新闻(current元数据):
+            if 入库条数上限 > 0 and 当前入库条数 >= 入库条数上限:
+                break
+
             今天的新闻 = 新闻()
             今天的新闻.set_元数据(current元数据)
             print('属于今天的新闻，准备处理')
@@ -141,8 +112,6 @@ if __name__ == "__main__":
         else:
             print('不是今天的新闻，跳过')
 
-        if 入库条数上限 > 0 and 当前入库条数 > 入库条数上限:
-           break
     with open('result.json', 'w', encoding='utf-8') as f:
         json.dump(今天的新闻list, f, ensure_ascii=False, indent=4, cls=新闻Encoder)
     每日简报文件 = 生成每日简报(今天的新闻list)
