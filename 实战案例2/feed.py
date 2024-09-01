@@ -50,7 +50,7 @@ def 根据元数据过滤新闻(current元数据):
 def 抓取新闻内容(url):
     response = requests.get(url)
     response.encoding = 'utf-8' # 指定编码
-    soup = BeautifulSoup(response.text, 'html.parser', from_encoding='utf-8') # 指定编码
+    soup = BeautifulSoup(response.text, 'html.parser')
 
     正文 = soup.find('div', {'class': 'c-pageArticle_content'})
     if 正文 is not None and 正文.text is not None:
@@ -86,7 +86,7 @@ def 对长文本进行翻译(输入文本):
   else:
     return 翻译成中文(输入文本)
 
-def 生成每日简报():
+def 生成每日简报(今天的新闻list:list):
     print("生成每日简报")
 
     # 获取当前日期和时间
@@ -102,14 +102,13 @@ def 生成每日简报():
         f.write("<html><head><title>CNET每日简报</title></head><body>")
         f.write(f"<h1>CNET每日简报-{formatted_date}</h1>")
         f.write("<ul>")
-        文章列表 = [{"title": "标题1", "summary": "摘要1"}]
-        for current in 文章列表:
+        for current in 今天的新闻list:
             f.write("<li>")
             f.write("<h2>")
-            f.write(current["title"])
+            f.write(current.元数据.标题_中文翻译)
             f.write("</h2>")
             f.write("<p>")
-            f.write(current["summary"])
+            f.write(current.摘要)
             f.write("</p>")
             f.write("</li>")
         f.write("</ul>")
@@ -133,14 +132,13 @@ if __name__ == "__main__":
             今天的新闻.set_新闻内容(抓取新闻内容(今天的新闻.元数据.url))
             if 今天的新闻 is not None and 今天的新闻.新闻内容 is not None:
                 今天的新闻.set_摘要(对长文本进行摘要(今天的新闻.新闻内容))
-                # 今天的新闻.新闻内容_中文 = 翻译成中文(current,文章内容)
-                # 翻译成中文(current,文章内容)
-                # 文本摘要(current)
-                # 翻译成中文(current,摘要)
+                今天的新闻.set_标题_中文翻译(翻译成中文(今天的新闻.元数据.标题))
+                今天的新闻.set_新闻内容_中文翻译(对长文本进行翻译(今天的新闻.新闻内容))
                 今天的新闻list.append(今天的新闻)
         else:
             print('不是今天的新闻，跳过')
     with open('result.json', 'w', encoding='utf-8') as f:
         json.dump(今天的新闻list, f, ensure_ascii=False, indent=4, cls=新闻Encoder)
-    # 每日简报文件 = 生成每日简报()
-    # 打开每日简报(每日简报文件)
+    每日简报文件 = 生成每日简报(今天的新闻list)
+    打开每日简报(每日简报文件)
+
