@@ -23,6 +23,7 @@ def index(request):
         查询结果 = None
         if 查询参数 is not None:
             查询结果 = 查询(查询参数)
+            print(f'查询结果={json.dumps(查询结果)}')
 
         if 查询结果 is None:
             从数据库查不到相关数据时的操作()

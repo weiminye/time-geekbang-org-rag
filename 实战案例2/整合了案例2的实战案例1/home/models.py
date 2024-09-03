@@ -33,7 +33,7 @@ class CNET新闻(models.Model):
 
     标题 = models.TextField()
     标题中文翻译 = models.TextField(null=True)
-    新闻发布日期 = models.DateTimeField(auto_now_add=True)
+    新闻发布日期 = models.DateTimeField(null=True)
     url = models.TextField(null=True)
     作者 = models.TextField(null=True)
     权限 = models.TextField(null=True)    
