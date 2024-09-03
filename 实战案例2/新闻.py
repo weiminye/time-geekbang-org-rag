@@ -25,7 +25,7 @@ class 新闻:
 class 新闻Encoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, 新闻):
-            return {"元数据": json.loads(json.dumps(obj.元数据, cls=元数据Encoder)), "新闻内容": obj.新闻内容,"摘要": obj.摘要}
+            return {"元数据": json.loads(json.dumps(obj.元数据, cls=元数据Encoder)), "新闻内容": obj.新闻内容,"新闻内容_中文翻译":obj.新闻内容_中文翻译,"摘要": obj.摘要}
         return super().default(obj)
 
 class 元数据:

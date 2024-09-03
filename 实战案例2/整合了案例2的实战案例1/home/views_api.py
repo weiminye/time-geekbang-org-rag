@@ -42,15 +42,15 @@ def CNET新闻入库api(request):
     # 遍历json数据，将数据写入数据库
     for item in json_obj:
         CNET新闻实例 = CNET新闻()
-        CNET新闻.标题 = item.元数据.标题
-        CNET新闻.标题中文翻译 = item.元数据.标题_中文翻译
-        CNET新闻.新闻发布日期 = item.元数据.创建日期
-        CNET新闻.url = item.元数据.url
-        CNET新闻.作者 = item.元数据.作者
+        CNET新闻.标题 = item['元数据']['标题']
+        CNET新闻.标题中文翻译 = item['元数据']['标题_中文翻译']
+        CNET新闻.新闻发布日期 = item['元数据']['创建日期']
+        CNET新闻.url = item['元数据']['url']
+        CNET新闻.作者 = item['元数据']['作者']
         CNET新闻.权限 = "CNETNews"
-        CNET新闻.新闻内容 = item.新闻内容
-        CNET新闻.摘要 = item.摘要
-        CNET新闻.新闻内容中文翻译 = item.新闻内容_中文翻译
+        CNET新闻.新闻内容 = item['新闻内容']
+        CNET新闻.摘要 = item['摘要']
+        CNET新闻.新闻内容中文翻译 = item['新闻内容_中文翻译']
         CNET新闻实例.save()
 
     return JsonResponse({"code":200,"message":"已经成功将CNET新闻入库"},
