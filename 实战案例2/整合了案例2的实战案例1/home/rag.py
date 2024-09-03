@@ -4,7 +4,6 @@ import os
 import requests
 
 from .models import 对话记录
-from datetime import datetime,timedelta
 
 #region 跟具体大模型相关的，如果需要修改大模型，可能需要修改这部分函数
 def get_access_token():
@@ -62,7 +61,6 @@ def 构造解析用户输入并返回结构化数据用的messages(之前的用�
   if 之前的用户输入 is not None and len(之前的用户输入.strip()) > 0:
     用户输入 = 之前的用户输入 + 用户输入
   
-  前天 = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
   messages=[
   {"role": "user", "content": f"""
   请根据用户的输入返回json格式结果，除此之外不要返回其他内容。注意，模块部分请按以下选项返回对应序号：
@@ -92,7 +90,7 @@ def 构造解析用户输入并返回结构化数据用的messages(之前的用�
   示例4：
   用户：前天的CNET新闻有哪些？
   系统：
-  {{'模块':6,'日期':{前天}}}
+  {{'模块':6,'日期':前天}}
 
   用户：{用户输入}
   系统：
