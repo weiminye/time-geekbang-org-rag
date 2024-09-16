@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import json
 import os
 
@@ -117,12 +118,42 @@ def 构造全部messages(之前的messages,当前messages):
   else:
     return 当前messages
 
+def 构造根据描述生成日期messages(输入字符串):
+  今天 = datetime.now().strftime("%Y-%m-%d")
+  messages=[
+  {"role": "user", "content": f"""
+  今天是：{今天}
+  请获取以下描述的日期：
+
+  {输入字符串}
+  """},
+  ]
+  return messages
+
 #endregion
 
 #region 对数据进行处理
+def 将日期换算成实际日期(input_str):
+    # 将输入的 JSON 字符串转换为字典
+    input_data = json.loads(input_str.strip())
+    
+    # 检查模块是否为6
+    if input_data.get("模块") == 6:
+        # 检查是否存在日期字段
+        if "日期" in input_data:
+          if input_data["日期"] == "前天":
+            # 获取当前日期并计算前天的日期
+            yesterday = datetime.now() - timedelta(days=2)
+            input_data["日期"] = yesterday.strftime("%Y-%m-%d")
+    
+    return json.dumps(input_data)
+
 def 对AI结果进一步处理(AI结果):
   处理后结果 = AI结果.replace("```json", '').replace("```", '') # 去掉json格式之外无关的内容
   处理后结果 = 处理后结果.replace("根据您所提供的信息，","") # 去掉开头的提示
+
+  处理后结果 = 将日期换算成实际日期(处理后结果)# 针对实战案例2的处理
+
   return 处理后结果
 
 def 将查询结果转为字符串(查询结果):

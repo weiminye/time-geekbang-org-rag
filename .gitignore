@@ -161,3 +161,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 实战案例2/feed.json
+实战案例2/整合了案例2的实战案例1/db.backup.sqlite3
