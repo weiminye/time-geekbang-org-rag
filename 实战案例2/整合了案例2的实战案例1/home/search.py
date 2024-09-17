@@ -20,5 +20,5 @@ def 查询(查询参数):
                 # 将字符串转换为日期对象
                 date_obj = datetime.strptime(date_str, date_format)
 
-                查询结果 = CNET新闻.objects.filter(新闻发布日期__date=date_obj).values('标题中文翻译')
+                查询结果 = CNET新闻.objects.filter(新闻发布日期__date=date_obj).values_list('标题中文翻译', flat=True)
                 return 查询结果

@@ -32,7 +32,7 @@ def index(request):
                 查询结果json格式 = serializers.serialize("json", list(查询结果))
             except:
                 查询结果json格式 = json.dumps(list(查询结果), ensure_ascii=False)
-            根据查询结果回答用户输入(查询结果json格式,用户输入,给AI的辅助信息)
+            根据查询结果回答用户输入(查询结果json格式,用户输入)
 
     conversation_list = 获取当前对话记录()
     return render(request, "home/index.html",{"object_list":conversation_list})

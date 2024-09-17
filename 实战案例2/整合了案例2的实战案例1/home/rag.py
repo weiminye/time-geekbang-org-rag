@@ -101,11 +101,11 @@ def 构造解析用户输入并返回结构化数据用的messages(之前的用�
 
 def 构造查询结果用的messages(查询结果,用户输入):
   return [{"role": "user", "content": f"""
-  您已经知道以下信息：
+  关于问题：{用户输入}，您已经获得以下信息：
 
   {将查询结果转为字符串(查询结果)}
 
-  请根据以上您所知道的信息回答用户的问题，注意，请简单和直接的回答，不要返回其他内容，不要提“根据您所提供的信息”之类的话。
+  请根据以上信息回答问题，注意，请简单和直接的回答，不要返回其他内容，不要提“根据您所提供的信息”之类的话。
 ：{用户输入}
   """}]
 
@@ -134,19 +134,22 @@ def 构造根据描述生成日期messages(输入字符串):
 
 #region 对数据进行处理
 def 将日期换算成实际日期(input_str):
-    # 将输入的 JSON 字符串转换为字典
-    input_data = json.loads(input_str.strip())
-    
-    # 检查模块是否为6
-    if input_data.get("模块") == 6:
-        # 检查是否存在日期字段
-        if "日期" in input_data:
-          if input_data["日期"] == "前天":
-            # 获取当前日期并计算前天的日期
-            yesterday = datetime.now() - timedelta(days=2)
-            input_data["日期"] = yesterday.strftime("%Y-%m-%d")
-    
-    return json.dumps(input_data)
+  if "日期" in input_str:
+    try:
+      # 将输入的 JSON 字符串转换为字典
+      input_data = json.loads(input_str.strip())
+      
+      # 检查模块是否为6
+      if input_data.get("模块") == 6:
+          # 检查是否存在日期字段
+          if "日期" in input_data:
+            if input_data["日期"] == "前天":
+              # 获取当前日期并计算前天的日期
+              yesterday = datetime.now() - timedelta(days=2)
+              input_data["日期"] = yesterday.strftime("%Y-%m-%d")
+      return json.dumps(input_data)
+    except:
+      return input_str
 
 def 对AI结果进一步处理(AI结果):
   处理后结果 = AI结果.replace("```json", '').replace("```", '') # 去掉json格式之外无关的内容
@@ -164,8 +167,11 @@ def 将查询结果转为字符串(查询结果):
       for key, value in current['fields'].items():
         return_str += f"{key}：{value}\n"
     else:
-      for key, value in current.items():
-        return_str += f"{key}：{value}\n"
+      try:
+        for key, value in current.items():
+          return_str += f"{key}：{value}\n"
+      except:
+        return 查询结果
   return return_str
 #endregion
 
