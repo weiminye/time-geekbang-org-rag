@@ -28,7 +28,11 @@ def index(request):
         if 查询结果 is None:
             从数据库查不到相关数据时的操作()
         else:
-            查询结果json格式 = serializers.serialize("json", list(查询结果))
+            if isinstance(查询结果, list):
+                查询结果json格式 = json.dumps(查询结果)
+            else:
+                查询结果json格式 = serializers.serialize("json", list(查询结果))
+            
             根据查询结果回答用户输入(查询结果json格式,用户输入)
 
     conversation_list = 获取当前对话记录()

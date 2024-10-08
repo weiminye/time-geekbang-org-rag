@@ -1,20 +1,19 @@
 from django.db import models
+from pgvector.django import VectorField
 
 class 销售入账记录(models.Model):
-    id = models.IntegerField(
-         primary_key = True,
-         editable = False)
+    id = models.AutoField(primary_key=True)
 
     客户 = models.CharField(max_length=255)
+    客户向量编码 = VectorField(dimensions=1024,null=True,blank=True)
+    客户向量编码模型 = models.TextField(default="bge-large-zh-v1.5")
     入账日期 = models.DateTimeField()
     入账金额 = models.TextField(null=True)
     已到账款项 = models.IntegerField(null=True)
     剩余到账款项 = models.IntegerField(null=True)
 
 class 对话记录(models.Model):
-    id = models.IntegerField(
-         primary_key = True,
-         editable = False)
+    id = models.AutoField(primary_key=True)
 
     role = models.TextField()
     content = models.TextField(null=True)

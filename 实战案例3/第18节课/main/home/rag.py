@@ -154,7 +154,7 @@ def 获取结构化数据查询参数(用户输入):
       结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(之前的用户输入,用户输入),用户输入,原文不带入大模型对话中=False,结果不带入大模型对话中=True)
       查询参数 = json.loads(结构化数据)
       return 查询参数
-    except:
+    except Exception as e:
       当前重试次数 += 1
   
   return None

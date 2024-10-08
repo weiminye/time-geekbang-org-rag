@@ -14,12 +14,14 @@ app.向量编码器instance = None
 def init_data():
     app.向量编码器instance = 向量编码器()
 
-@app.post("/api/encode")
+@app.post("/api/embedding/encode")
 async def 向量编码(request: Request):
     data = await request.json()
+    print(data)
     input_str= data["input"]
     return_result = app.向量编码器instance.向量编码(input_str)
     return return_result
+    # return data
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8001)
+    uvicorn.run("main:app", host="0.0.0.0", port=8902)

@@ -12,6 +12,6 @@ class 向量编码器:
         encode_kwargs = {'normalize_embeddings': True} # set True to compute cosine similarity
         self.embed_model = HuggingFaceBgeEmbeddings(model_name=model_name,cache_folder=cache_folder,model_kwargs=model_kwargs,encode_kwargs=encode_kwargs)
 
-    def 向量编码(query: str):
+    def 向量编码(self,query: str):
         embed_result =  self.embed_model.embed_query(query)
         return {'向量编码':embed_result}

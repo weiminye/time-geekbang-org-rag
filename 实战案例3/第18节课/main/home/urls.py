@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views,views_api
+from . import views,views_api,api
 
 app_name = "home"
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
     path("api/answer-without-data", views_api.从数据库查不到相关数据时的操作api, name="api-answer-without-data"),
     path("api/answer-with-data", views_api.根据查询结果回答用户输入api, name="api-answer-with-data"),
     path("api/get-conversation-list", views_api.获取对话记录api, name="api-get-conversation-list"),
+    path("api/knowledge-embedding-batch", api.对知识批量进行向量编码, name="knowledge-embedding-batch"),
 ]
