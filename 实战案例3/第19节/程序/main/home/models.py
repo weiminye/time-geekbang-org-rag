@@ -48,6 +48,7 @@ class 知识详细表(models.Model):
     lastmodified_time = models.DateTimeField(auto_now=True)
 
     文本内容 = models.TextField()
+    内容在分段中的顺序 = models.IntegerField(null=True,blank=True)
     向量编码 = VectorField(dimensions=1024,null=True,blank=True)
     向量编码模型 = models.TextField(default="bge-large-zh-v1.5")
-    知识主表 = models.OneToOneField(知识主表, on_delete=models.CASCADE)
+    知识主表 = models.ForeignKey(知识主表, on_delete=models.CASCADE)

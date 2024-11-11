@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 实战案例2/feed.json
 实战案例2/整合了案例2的实战案例1/db.backup.sqlite3
+实战案例3/第19节/要导入的数据/~$data.xlsx
