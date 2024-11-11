@@ -15,4 +15,6 @@ urlpatterns = [
     path("api/answer-with-data", views_api.根据查询结果回答用户输入api, name="api-answer-with-data"),
     path("api/get-conversation-list", views_api.获取对话记录api, name="api-get-conversation-list"),
     path("api/knowledge-embedding-batch", api.对知识批量进行向量编码, name="knowledge-embedding-batch"),
+
+    path("api/knowledge-embedding-batch", api.对知识批量进行向量编码, name="knowledge-embedding-batch"),
 ]
