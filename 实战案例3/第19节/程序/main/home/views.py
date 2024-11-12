@@ -16,27 +16,22 @@ def newtalk(request):
     return redirect(reverse('home:index'))
 
 def index(request):
+    查询结果 = None
     if request.method == 'POST':
         用户输入 = request.POST['question']
 
-        查询参数 = 获取结构化数据查询参数(用户输入)
-        查询结果 = None
-        if 查询参数 is not None:
-            查询结果 = 查询(查询参数)
-            print(f'查询结果={json.dumps(查询结果)}')
+        查询结果 = 查询(用户输入)
 
-        if 查询结果 is None:
-            从数据库查不到相关数据时的操作()
-        else:
-            if isinstance(查询结果, list):
-                查询结果json格式 = json.dumps(查询结果)
-            else:
-                查询结果json格式 = serializers.serialize("json", list(查询结果))
+        查询结果json格式 = '{"知识内容": "' + 查询结果["知识内容"] + '"}'
             
-            根据查询结果回答用户输入(查询结果json格式,用户输入)
+        根据查询结果回答用户输入(查询结果json格式,用户输入)
 
     conversation_list = 获取当前对话记录()
-    return render(request, "home/index.html",{"object_list":conversation_list})
+    
+    if 查询结果 is None:
+        return render(request, "home/index.html",{"object_list":conversation_list})
+    else:
+        return render(request, "home/index.html",{"object_list":conversation_list,"link_text":查询结果["标题"],"link_url":查询结果["url"]})
 
 def salescheck(request):
     # return HttpResponse("home index")

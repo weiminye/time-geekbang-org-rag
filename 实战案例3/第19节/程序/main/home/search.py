@@ -1,4 +1,4 @@
-from .models import 销售入账记录
+from .models import 知识主表, 知识详细表, 销售入账记录
 from .api import 调用向量编码服务
 
 def 查询(查询参数):
@@ -23,3 +23,15 @@ def 查询(查询参数):
                             '剩余到账款项': item.剩余到账款项
                         })
                     return 模糊搜索结果
+    else:
+        查询字符串 = 查询参数.strip()
+        查询字符串向量编码 = 调用向量编码服务(查询字符串)
+        模糊搜索结果RawQuerySet = 知识详细表.objects.raw('SELECT *, 1 - (向量编码 <=> %s) AS 余弦相似度,文本内容 FROM public."home_知识详细表" order by 余弦相似度 desc;',[str(查询字符串向量编码),])
+
+        选取的结果 = 模糊搜索结果RawQuerySet[0]
+        模糊搜索结果 = {
+                '知识内容': 选取的结果.文本内容,
+                'url': 选取的结果.知识主表.url,
+                '标题': 选取的结果.知识主表.标题
+            }
+        return 模糊搜索结果

@@ -17,6 +17,9 @@
       </div>
       {% endif %}
     {% endfor %}
+    {% if link_text is not None %}
+      参考链接：<a href="{{link_url}}" target="_blank">{{link_text}}</a> &nbsp;
+    {% endif %}
     <form method="POST">
       {% csrf_token %}
       <div class="form-group row">
