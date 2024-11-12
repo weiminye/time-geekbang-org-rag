@@ -29,14 +29,10 @@ class 知识主表(models.Model):
     id = models.IntegerField(
          primary_key = True,
          editable = False)
-    created_time = models.DateTimeField(auto_now_add=True)
-    lastmodified_time = models.DateTimeField(auto_now=True)
 
-    标题 = models.TextField()
-    url = models.TextField()
-    创建时间 = models.DateTimeField(null=True,blank=True)
-    作者 = models.TextField(null=True,blank=True)
-    权限 = models.TextField(null=True,blank=True)
+    模块 = models.TextField(null=True,blank=True)
+    标题 = models.TextField(null=True,blank=True)
+    url = models.TextField(null=True,blank=True)
     向量编码 = VectorField(dimensions=1024,null=True,blank=True)
     向量编码模型 = models.TextField(default="bge-large-zh-v1.5")
 
@@ -44,8 +40,6 @@ class 知识详细表(models.Model):
     id = models.IntegerField(
          primary_key = True,
          editable = False)  
-    created_time = models.DateTimeField(auto_now_add=True)
-    lastmodified_time = models.DateTimeField(auto_now=True)
 
     文本内容 = models.TextField()
     内容在分段中的顺序 = models.IntegerField(null=True,blank=True)
