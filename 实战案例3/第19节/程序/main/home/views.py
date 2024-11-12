@@ -31,7 +31,7 @@ def index(request):
     if 查询结果 is None:
         return render(request, "home/index.html",{"object_list":conversation_list})
     else:
-        return render(request, "home/index.html",{"object_list":conversation_list,"link_text":查询结果["标题"],"link_url":查询结果["url"]})
+        return render(request, "home/index.html",{"object_list":conversation_list,"question":用户输入,"link_text":查询结果["标题"],"link_url":查询结果["url"]})
 
 def salescheck(request):
     # return HttpResponse("home index")

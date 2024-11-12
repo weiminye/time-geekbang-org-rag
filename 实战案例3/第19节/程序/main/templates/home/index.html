@@ -6,6 +6,11 @@
 </div>
 
 <div class="col-sm-10">
+  {% if question is not None %}
+          <div>
+      你：{{question}}
+          </div>
+    {% endif %}
     {% for current_obj in object_list %}
       {% if current_obj.不带入大模型对话中 is False%}
       <div>
