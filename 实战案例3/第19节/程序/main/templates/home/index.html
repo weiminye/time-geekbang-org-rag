@@ -11,15 +11,20 @@
       <div>
         {% if current_obj.role == "user" %}
           你：{{current_obj.content}}
+          <hr>
         {% else %}
           AI：{{current_obj.处理后content}}
+          {% if link_text is not None %}
+          <div>
+      参考链接：<a href="{{link_url}}" target="_blank">{{link_text}}</a> &nbsp;
+          </div>
+    {% endif %}
+    <hr>
         {% endif %}
       </div>
       {% endif %}
     {% endfor %}
-    {% if link_text is not None %}
-      参考链接：<a href="{{link_url}}" target="_blank">{{link_text}}</a> &nbsp;
-    {% endif %}
+    
     <form method="POST">
       {% csrf_token %}
       <div class="form-group row">
