@@ -8,6 +8,7 @@ urlpatterns = [
     path("salescheck", views.salescheck, name="salescheck"),
     path("addsalescheck", views.addsalescheck, name="addsalescheck"),
     path("newtalk", views.newtalk, name="newtalk"),
+    path("review", views.review, name="review"),
 
     path("api/new-talk", views_api.开始新的对话api, name="api-new-talk"),
     path("api/get-query-paras", views_api.获取结构化数据查询参数api, name="api-get-query-paras"),

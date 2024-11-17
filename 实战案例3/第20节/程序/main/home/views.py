@@ -11,6 +11,20 @@ from .models import 对话记录, 销售入账记录
 
 from django.core import serializers
 
+def review(request):
+    conversationid = request.GET.get('conversationid')
+    review = request.GET.get('review')
+
+    current对话记录 = 对话记录.objects.get(id=conversationid)
+    if review == 'positive':
+        current对话记录.positive_review = True
+        current对话记录.save()
+    if review == 'negative':
+        current对话记录.negative_review = True
+        current对话记录.save()
+
+    return redirect("http://127.0.0.1:8000/admin/home/对话记录/")
+
 def newtalk(request):
     开始新的对话()
     return redirect(reverse('home:index'))
