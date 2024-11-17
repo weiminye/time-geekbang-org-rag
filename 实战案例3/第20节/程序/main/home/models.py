@@ -21,6 +21,8 @@ class 对话记录(models.Model):
     提交给大模型的playload = models.TextField(null=True)
     不带入大模型对话中 = models.BooleanField(default=False)
     已结束 = models.BooleanField(default=False)
+    positive_review = models.BooleanField(default=False, verbose_name='好评')
+    negative_review = models.BooleanField(default=False, verbose_name='差评')
 
     created_time = models.DateTimeField(auto_now_add=True)
     lastmodified_time = models.DateTimeField(auto_now=True)
