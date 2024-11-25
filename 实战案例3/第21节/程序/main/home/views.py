@@ -43,10 +43,9 @@ def index(request):
     if request.method == 'POST':
         用户输入 = request.POST['question']
 
-        查询参数 = 获取结构化数据查询参数(用户输入)
+        查询参数 = 获取结构化数据查询参数(用户输入,module)
         查询结果 = None
         if 查询参数 is not None:
-            查询参数['模块'] = module
             查询结果 = 查询(查询参数)
             print(f'查询结果={json.dumps(查询结果)}')
 

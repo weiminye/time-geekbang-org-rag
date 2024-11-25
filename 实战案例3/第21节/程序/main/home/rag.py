@@ -3,6 +3,8 @@ import os
 
 import requests
 
+from .prompt import *
+
 from .models import 对话记录
 
 #region 跟具体大模型相关的，如果需要修改大模型，可能需要修改这部分函数
@@ -57,39 +59,6 @@ def 保存对话记录(role,content,处理后content,提交给大模型的playlo
 #endregion
 
 #region 构造messages相关
-def 构造解析用户输入并返回结构化数据用的messages(之前的用户输入,用户输入):
-  if 之前的用户输入 is not None and len(之前的用户输入.strip()) > 0:
-    用户输入 = 之前的用户输入 + 用户输入
-  messages=[
-  {"role": "user", "content": f"""
-  请根据用户的输入返回json格式结果，除此之外不要返回其他内容。注意，模块部分请按以下选项返回对应序号：
-   1. 销售对账
-   2. 报价单
-   3. 销售订单
-   4. 送货单
-   5. 退货单
-   6. 其他
-
-  示例1：
-  用户：客户北京极客邦有限公司的款项到账了多少？
-  系统：
-  {{'模块':1,'客户名称':'北京极客邦有限公司'}}
-
-  示例2：
-  用户：你好
-  系统：
-  {{'模块':6,'其他数据',None}}
-
-  示例3：
-  用户：最近一年你过得如何？
-  系统：
-  {{'模块':6,'其他数据',None}}
-
-  用户：{用户输入}
-  系统：
-  """},
-  ]
-  return messages
 
 def 构造查询结果用的messages(查询结果,用户输入):
   return [{"role": "user", "content": f"""
@@ -150,13 +119,13 @@ def 从数据库查不到相关数据时的操作():
   record.不带入大模型对话中 = False
   record.save()
 
-def 获取结构化数据查询参数(用户输入):
+def 获取结构化数据查询参数(用户输入,module):
   之前的用户输入 = 获取之前的用户输入()
   重试总次数 = 2
   当前重试次数 = 0
   while 当前重试次数 <= 重试总次数:
     try:
-      结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(之前的用户输入,用户输入),用户输入,原文不带入大模型对话中=False,结果不带入大模型对话中=True)
+      结构化数据 = 对话模式(构造解析用户输入并返回结构化数据用的messages(之前的用户输入,用户输入,module),用户输入,原文不带入大模型对话中=False,结果不带入大模型对话中=True)
       查询参数 = json.loads(结构化数据)
       return 查询参数
     except Exception as e:
