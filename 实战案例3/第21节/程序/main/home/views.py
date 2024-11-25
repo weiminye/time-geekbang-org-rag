@@ -7,7 +7,7 @@ from .rag import *
 
 from .search import 查询
 
-from .models import 对话记录, 销售入账记录
+from .models import 关键词, 对话记录, 销售入账记录
 
 from django.core import serializers
 
@@ -43,7 +43,14 @@ def index(request):
     if request.method == 'POST':
         用户输入 = request.POST['question']
 
-        查询参数 = 获取结构化数据查询参数(用户输入,module)
+        关键词RawQuerySet = 关键词.objects.raw("SELECT id, 关键词, 模块, 备注 FROM public.home_关键词 where 模块='" + str(module) + "' and position(关键词 in '" + 用户输入 + "') > 0;")
+
+        if 关键词RawQuerySet is not None and len(关键词RawQuerySet) > 0:
+            if module == 1:
+                查询参数 = {'模块':1,'客户名称':关键词RawQuerySet[0].关键词}
+        else:
+            查询参数 = 获取结构化数据查询参数(用户输入,module)
+
         查询结果 = None
         if 查询参数 is not None:
             查询结果 = 查询(查询参数)
