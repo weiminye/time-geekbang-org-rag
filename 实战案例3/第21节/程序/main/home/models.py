@@ -48,3 +48,12 @@ class 知识详细表(models.Model):
     向量编码 = VectorField(dimensions=1024,null=True,blank=True)
     向量编码模型 = models.TextField(default="bge-large-zh-v1.5")
     知识主表 = models.ForeignKey(知识主表, on_delete=models.CASCADE)
+
+class 关键词(models.Model):
+    id = models.IntegerField(
+         primary_key = True,
+         editable = False)
+
+    关键词 = models.TextField()
+    模块 = models.TextField()
+    备注 = models.TextField()
