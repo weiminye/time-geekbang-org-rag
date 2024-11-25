@@ -1,0 +1,53 @@
+{% extends "base.html" %} 
+
+{% block main_content%}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h3 class="h3">销售管理 / 销售对账 / 添加入账记录</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <a class="btn btn-sm btn-primary" href="salescheck">返回对账界面</a>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-10">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">客户</label>
+      <div class="col-sm-6">
+        <input type="input" class="form-control" name="name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">入账日期</label>
+      <div class="col-sm-6">
+        <input type="input" class="form-control" name="created_at">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">入账金额</label>
+      <div class="col-sm-6">
+        <input type="input" class="form-control" name="amount">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">已到账款项</label>
+      <div class="col-sm-6">
+        <input type="input" class="form-control" name="total">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">剩余到账款项</label>
+      <div class="col-sm-6">
+        <input type="input" class="form-control" name="leave">
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-6 text-center">
+        <button type="submit" class="btn btn-primary">提交</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
